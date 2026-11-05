@@ -1,0 +1,11 @@
+{
+  "name": "wheeli",
+  "private": true,
+  "description": "Wheeli dashboard with its AI connection (wheeli-server.js serves Wheeli-Deck.html and holds the AI key)",
+  "scripts": {
+    "start": "node wheeli-server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
