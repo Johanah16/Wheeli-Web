@@ -1,0 +1,23 @@
+{
+  "name": "Wheeli \u00b7 Powered by ResVita",
+  "short_name": "Wheeli",
+  "start_url": "Wheeli-Deck.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#001A33",
+  "theme_color": "#00142A",
+  "icons": [
+    {
+      "src": "app-icons/wheeli-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "app-icons/wheeli-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

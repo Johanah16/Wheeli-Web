@@ -1,0 +1,23 @@
+{
+  "name": "Platinum Surface Solutions \u00b7 Wheeli",
+  "short_name": "Platinum",
+  "start_url": "Platinum-Surface-Solutions-Deck.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#001A33",
+  "theme_color": "#00142A",
+  "icons": [
+    {
+      "src": "app-icons/platinum-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "app-icons/platinum-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
