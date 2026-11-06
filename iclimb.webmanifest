@@ -1,0 +1,23 @@
+{
+  "name": "iClimb Tree Services \u00b7 Wheeli",
+  "short_name": "iClimb",
+  "start_url": "iClimb-Tree-Services-Deck.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#001A33",
+  "theme_color": "#00142A",
+  "icons": [
+    {
+      "src": "app-icons/iclimb-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "app-icons/iclimb-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

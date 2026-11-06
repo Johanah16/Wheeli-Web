@@ -1,0 +1,23 @@
+{
+  "name": "Onsite Mechanical Repairs \u00b7 Wheeli",
+  "short_name": "Onsite",
+  "start_url": "Onsite-Mechanical-Repairs-Deck.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#001A33",
+  "theme_color": "#00142A",
+  "icons": [
+    {
+      "src": "app-icons/onsite-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "app-icons/onsite-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
