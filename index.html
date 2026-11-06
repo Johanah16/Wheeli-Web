@@ -922,7 +922,7 @@ if (window.WHEELI_ASK_CODE && !window.WheeliAuth) window.WheeliAuth = { token: (
   const SAMPLE = !API() && window.claude && window.claude.use ? window.claude.use('sample').catch(() => null) : Promise.resolve(null);
   // BETA route: a free Gemini key saved in this browser only (pasted into the Asset panel's Connect box). The browser talks to
   // Gemini directly, so it works even when Wheeli is opened by double-clicking the file. The key is never written into this file.
-  const GKEY = 'wheeli-gemini-key', GMODELS = ['gemini-flash-latest', 'gemini-2.5-flash', 'gemini-2.0-flash'];
+  const GKEY = 'wheeli-gemini-key', GMODELS = ['gemini-2.5-flash', 'gemini-flash-lite-latest', 'gemini-2.5-flash-lite', 'gemini-flash-latest', 'gemini-2.0-flash', 'gemini-2.0-flash-lite'];   // each has its own free allowance: if one is refused, try the next
   const gkey = () => { try { return localStorage.getItem(GKEY) || ''; } catch (e) { return ''; } };
   async function gemini(prompt, signal, tries, mi) {
     mi = mi || 0; let r;
@@ -933,13 +933,16 @@ if (window.WHEELI_ASK_CODE && !window.WheeliAuth) window.WheeliAuth = { token: (
     const d = await r.json().catch(() => ({}));
     if (!r.ok) {
       const msg = String((d.error && d.error.message) || '');
-      if ((r.status === 429 || r.status === 503) && tries > 0 && !/per.?day|daily|billing/i.test(msg)) {   // free per-minute limit: wait, then try once more
+      const quota = ((((d.error || {}).details || []).find(x => x.violations) || {}).violations || []).map(v => v.quotaId || v.quotaMetric).filter(Boolean).slice(0, 2).join(', ');
+      const detail = `${GMODELS[mi]}: Google said ${r.status}: ${msg.replace(/For more information[\s\S]*$/, '').trim().slice(0, 300)}${quota ? ' [' + quota + ']' : ''}`;
+      console.warn('Wheeli:', detail);
+      // this model's free allowance is used up, or is zero for this key: go straight to the next model, no waiting
+      if (r.status === 429 && mi + 1 < GMODELS.length) return gemini(prompt, signal, tries, mi + 1);
+      if ((r.status === 404 || (r.status === 400 && /model/i.test(msg))) && mi + 1 < GMODELS.length) return gemini(prompt, signal, tries, mi + 1);   // model not available to this key: try the next
+      if ((r.status === 429 || r.status === 503) && tries > 0 && !/per.?day|daily|billing|limit: ?0/i.test(msg)) {   // every model refused or busy: wait once, then try this one again
         const w = Math.min(20, parseFloat((((d.error || {}).details || []).find(x => x.retryDelay) || {}).retryDelay) || 8);
         await new Promise(ok => setTimeout(ok, w * 1000)); return gemini(prompt, signal, tries - 1, mi);
       }
-      const detail = `Google said ${r.status}: ${msg.slice(0, 160)}`;
-      console.warn('Wheeli:', GMODELS[mi], detail);
-      if ((r.status === 404 || (r.status === 400 && /model/i.test(msg))) && mi + 1 < GMODELS.length) return gemini(prompt, signal, tries, mi + 1);   // model not available to this key: try the next
       if ((r.status === 400 && /api.?key/i.test(msg)) || r.status === 401 || r.status === 403) { try { localStorage.removeItem(GKEY); } catch (e) {} throw { code: 'bad_key', detail }; }
       throw { code: r.status === 429 ? 'no_credit' : 'upstream_error', detail };
     }
